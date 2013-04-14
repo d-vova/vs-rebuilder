@@ -1,9 +1,8 @@
 {
   "name": "vs-rebuilder",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Thin wrapper around RegExp that helps to build complex regular expressions",
   "main": "rebuilder.js",
-  "engine": "0.10.4",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
