@@ -51,7 +51,7 @@ Rule.prototype.build = function build ( tracks, version ) {
 
   var string = '', index = 0;
   var tracks = tracks instanceof Array ? tracks : tracks == null ? [ ] : [ tracks ];
-  var version = version || '' + Math.round(Math.random() * 1000000) + new Date().getTime();
+  var version = version || '' new Date().getTime() + Math.round((1 + Math.random()) * 1000000);
 
   this.version = version;
   this.isBuilding = true; this.isBroken = false; this.error = null; this.mapping = { }
