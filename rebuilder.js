@@ -21,7 +21,9 @@ var Grammar = exports.Grammar = function Grammar ( description ) {
 Grammar.prototype.toString = function toString ( ) {
   var rules = [ ];
 
-  for ( var name in this.rule ) rules.push(this.rule[name]);
+  for ( var name in this.rule ) {
+    rules.push(this.rule[name] + ' : ' + JSON.stringify(this.rule[name].mapping));
+  }
 
   return rules.join('\n');
 }
@@ -48,9 +50,10 @@ Rule.prototype.build = function build ( tracks, version ) {
   if ( this.version == version ) return this;
 
   var string = '', index = 0;
-  var tracks = tracks instanceof Array ? tracks : tracks == null ? [ tracks ] : [ ];
+  var tracks = tracks instanceof Array ? tracks : tracks == null ? [ ] : [ tracks ];
   var version = version || '' + Math.round(Math.random() * 1000000) + new Date().getTime();
 
+  this.version = version;
   this.isBuilding = true; this.isBroken = false; this.error = null; this.mapping = { }
 
   for ( var i = 0; i < tracks.length; i += 1 ) {
@@ -91,7 +94,7 @@ Rule.prototype.build = function build ( tracks, version ) {
   if ( this.mapping[this.name] instanceof Array ) string = '(' + string + ')';
   else if ( this.isWrapped ) string = '(?:' + string + ')';
 
-  this.building = false; this.string = string; this.regex = new RegExp(string);
+  this.isBuilding = false; this.string = string; this.regex = new RegExp(string);
 
   return this;
 }
@@ -131,17 +134,21 @@ Rule.prototype.toString = function toString ( ) {
   return this.name + ' = ' + (this.isBroken ? String(this.error) : this.string);
 }
 
-Rule.REFERENCE = /^<([^<>]+)>$/ig;
+Rule.REFERENCE = /^<([^<>]+)>$/i;
 
 var compile = exports.compile = function compile ( description ) {
   return new Grammar(description);
 }
 
 
-var description = {
-  sip: [[ 'sip', ':', '.*' ]]
-}
-
-var grammar = compile(description);
-
-console.log(grammar);
+//var description = {
+//  sip: [[ 'sip', ':', '.*' ]]
+//}
+//
+//var grammar = compile(description);
+//
+//var result = grammar.rule.sip.build(['sip']).parse('sip:alice@sip.example.com');
+//
+//console.log(String(grammar));
+//console.log(grammar.rule.sip);
+//console.log(result);
