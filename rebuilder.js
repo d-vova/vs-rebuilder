@@ -7,7 +7,7 @@ var Grammar = exports.Grammar = function Grammar ( description ) {
     for ( var i = 0; i < choices.length; i += 1 ) {
       var choice = choices[i];
 
-      sequence.concat(choice);
+      sequence = sequence.concat(choice);
 
       if ( i < choices.length - 1 ) sequence.push('|');
     }
@@ -60,7 +60,7 @@ Rule.prototype.build = function build ( tracks, version ) {
   }
 
   for ( var i = 0; i < this.sequence.length; i += 1 ) {
-    var part = this.sequence[i], name = Rule.REFRENCE.exec(part);
+    var part = this.sequence[i], name = Rule.REFERENCE.exec(part);
 
     if ( name ) {
       var count = 0, rule = this.grammar.rule[name[1]];
@@ -136,3 +136,12 @@ Rule.REFERENCE = /^<([^<>]+)>$/ig;
 var compile = exports.compile = function compile ( description ) {
   return new Grammar(description);
 }
+
+
+var description = {
+  sip: [[ 'sip', ':', '.*' ]]
+}
+
+var grammar = compile(description);
+
+console.log(grammar);
